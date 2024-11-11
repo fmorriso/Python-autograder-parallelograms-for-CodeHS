@@ -1,0 +1,107 @@
+import re
+class Suite(PythonTestSuite):
+
+    # Any values that should be passed to any call to `input`
+    inputs = []
+
+    # remove all comments from the specified text
+    def remove_comments(self, text):
+        """https://www.codeease.net/programming/python/python-remove-all-comments"""
+        pattern = r"(\".*?\"|\'.*?\')|(/\*.*?\*/|#[^\r\n]*$)"
+        regex = re.compile(pattern, re.MULTILINE | re.DOTALL)
+        return regex.sub("", text)
+
+    def expect_create_two_instances(self) -> bool:
+        """ Make sure there are two instances created"""
+        count = 0
+        expectation = 'You should create at least two Parallelogram objects'
+        looking_for = 'Parallelogram('
+        idx = self.code_without_comments[self.code_index:].find(looking_for)
+        if idx == -1:
+            expect(idx).to_be_greater_than_or_equal_to(0) \
+                .with_options(test_name=expectation)
+            return False
+        # found one, now look for the next one in the code BEYOND where we found the first one
+        count += 1
+        self.code_index += idx + len(looking_for)
+        idx = self.code_without_comments[self.code_index:].find(looking_for)
+        if idx == -1:
+            expect(idx).to_be_greater_than_or_equal_to(0) \
+                .with_options(test_name=expectation)
+            return False
+        count += 1
+        self.code_index += idx + len(looking_for)
+        return count >= 2
+
+
+    # Write any tests that should run before the code is evaluated
+    def before_run(self, student_code, solution_code):
+
+        self.code_without_comments = self.remove_comments(student_code)
+        self.code_index = 0
+
+        init_def = list(filter(lambda line: 'def __init__' in line,
+                                student_code.splitlines()))
+
+        if len(init_def) == 1:
+            init_def_line = init_def[0]
+
+            # __init__(self, p1=0, p2=0)
+            has_two_params = len(init_def_line.split(','))  == 4
+
+            expect(has_two_params).to_be_truthy().with_options(
+                test_name='The "__init__" function should have three parameters',
+                student_output=student_code,
+            )
+            expect(init_def_line.replace(' ', '').count('=0')).to_equal(3).with_options(
+                test_name='Parameters for __init__ should have a default value of 0',
+                student_output=student_code,
+            )
+        else:
+            expect(False).to_be_truthy().with_options(
+                test_name='The Parallelogram class should have an "__init__" method',
+                student_output=student_code,
+                message_fail='Make sure the first parameter is "self" !',
+            )
+
+
+        expect(student_code).to_contain('self.side1').with_options(
+            test_name='The Parallelogram class should have an instance variable named side1',
+        )
+
+        expect(student_code).to_contain('self.side2').with_options(
+            test_name='The Parallelogram class should have an instance variable named side2',
+        )
+
+        expect(student_code).to_contain('self.angle').with_options(
+            test_name='The Parallelogram class should have an instance variable named angle',
+        )
+
+        expect(student_code).to_contain('class Parallelogram').with_options(
+            test_name='You should define a class called Parallelogram',
+
+        )
+
+        """
+        expect(student_code.count('Parallelogram(')).to_be_greater_than_or_equal_to(2).with_options(
+            test_name='You should create at least two Parallelogram objects',
+            student_output=student_code,
+        )
+        """
+
+
+        self.expect_create_two_instances()
+
+    # Write any tests that should run after the code is evaluated
+    def after_run(self, student_code, solution_code, student_output, solution_output):
+        from functools import reduce
+
+        has_numbers = reduce(lambda res, cur: res or cur.isdigit(),
+                             list(student_output),
+                             False)
+        expect(has_numbers).to_be_truthy().with_options(
+            test_name='You should print the Parallelogram\'s side1, side2, and angle',
+            student_output=student_output,
+        )
+
+Suite()
