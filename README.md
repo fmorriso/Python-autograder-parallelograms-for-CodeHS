@@ -1,4 +1,4 @@
-# python-codehs-autograder-paralleograms
+# Python CodeHS AutoGrader for parallelograms
 A project to test possible CodeHS Autograder logic for use in projects involving a Parallelogram.
 
 ## Regular Expressions
@@ -15,9 +15,19 @@ The above regular expression pattern breaks down as follows:
 *    \(\s* matches a left parenthesis followed by zero or more spaces.
 *    \s*\) matches zero or more spaces followed by a right parenthesis.
 ## Tools Used
-* Python 3.13.0
-* PyCharm 2024.2.4
-* Visual Studio Code 1.95.2
+
+| Tool     |  Version |
+|:---------|---------:|
+| Python   | 3.13.0   |
+| PyCharm  | 2024.2.3 |
+| VSCode   | 1.95.1   |
+
+## Change History
+
+| Date       | Description                  |
+|:-----------|:-----------------------------|
+| 2024-11-10 | Switch from GitLab to GitHub |
+
 ## Getting started
 
 To make it easy for you to get started with GitLab, here's a list of recommended next steps.
