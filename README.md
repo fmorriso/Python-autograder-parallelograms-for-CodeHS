@@ -15,9 +15,9 @@ The above regular expression pattern breaks down as follows:
 *    \(\s* matches a left parenthesis followed by zero or more spaces.
 *    \s*\) matches zero or more spaces followed by a right parenthesis.
 ## Tools Used
-* Python 3.12.3
-* PyCharm 2024.1
-* Visual Studio Code 1.88
+* Python 3.13.0
+* PyCharm 2024.2.4
+* Visual Studio Code 1.95.2
 ## Getting started
 
 To make it easy for you to get started with GitLab, here's a list of recommended next steps.
