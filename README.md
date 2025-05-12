@@ -18,9 +18,9 @@ The above regular expression pattern breaks down as follows:
 
 | Tool     |  Version |
 |:---------|---------:|
-| Python   | 3.13.0   |
-| PyCharm  | 2024.2.3 |
-| VSCode   | 1.95.1   |
+| Python   |   3.13.3 |
+| PyCharm  | 2025.1.1 |
+| VSCode   |  1.100.0 |
 
 ## Change History
 
